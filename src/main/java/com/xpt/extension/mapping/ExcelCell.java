@@ -17,4 +17,11 @@ public @interface ExcelCell {
 	 * @return
 	 */
 	String name() default "";
+
+	/**
+	 * 日期格式的解析
+	 * 
+	 * @return
+	 */
+	String dateFormatter() default "yyyy-MM-dd hh:mm:ss";
 }

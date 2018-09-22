@@ -31,11 +31,4 @@ public @interface ExcelSheet {
 	 * @return
 	 */
 	boolean check() default false;
-
-	/**
-	 * 日期格式的解析
-	 * 
-	 * @return
-	 */
-	String dateFormatter() default "yyyy-MM-dd hh:mm:ss";
 }

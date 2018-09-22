@@ -21,7 +21,10 @@ import com.xpt.extension.mapping.ExcelSheet;
  * 
  * @author LEric
  */
-public class ExcelImportUtil {
+public class UniqueExcelImportUtil {
+
+	private UniqueExcelImportUtil() {
+	}
 
 	/**
 	 * 只考虑简单的filePath，例如：/opt/pmo/object.wps

@@ -7,6 +7,7 @@
 
 	<properties>
 		<poi.version>3.17</poi.version>
+		<servlet.version>4.0.1</servlet.version>
 	</properties>
 
 	<dependencies>
@@ -20,6 +21,13 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

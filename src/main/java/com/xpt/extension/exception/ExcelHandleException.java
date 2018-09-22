@@ -10,4 +10,8 @@ public class ExcelHandleException extends RuntimeException {
 	public ExcelHandleException(String errMsg, Throwable cause) {
 		super(errMsg, cause);
 	}
+
+	public ExcelHandleException(Throwable paramThrowable) {
+		super(paramThrowable);
+	}
 }

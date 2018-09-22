@@ -53,8 +53,8 @@ public class SheetUtil {
 			for (Field field : fields) {
 				listFields.add(field);
 				ExcelCell excelCell = field.getAnnotation(ExcelCell.class);
-				if (Objects.isNull(excelCell) && Objects.nonNull(excelCell.name())
-						&& excelCell.name().trim().length() > 0) {
+				if (Objects.isNull(excelCell) || Objects.isNull(excelCell.name())
+						|| excelCell.name().trim().length() == 0) {
 					throw new ExcelHandleException("Make sure that ExcelCell anotation&&name exists!");
 				}
 				mapFields.put(excelCell.name(), field);
@@ -67,7 +67,6 @@ public class SheetUtil {
 		ExcelSheet excelSheet = classDomain.getAnnotation(ExcelSheet.class);
 		boolean check = excelSheet.check();
 		int rowCount = excelSheet.count();
-		String dateFormatter = excelSheet.dateFormatter();
 
 		// Excel列名称的获取，存在单元格的合并只获取Excel最后行的标题
 		int rowIndex = 0;
@@ -102,14 +101,14 @@ public class SheetUtil {
 		Iterator<Row> sheetIterator = sheet.rowIterator();
 		List<Object> dataList = new ArrayList<>();
 		while (sheetIterator.hasNext()) {
-			Row rowX = sheetIterator.next();
-			if (rowIndex > rowCount && Objects.nonNull(rowX)) {
+			Row row = sheetIterator.next();
+			if (rowIndex > rowCount && Objects.nonNull(row)) {
 				Object domainObj = classDomain.newInstance();
 				int size = listFields.size();
 
 				for (int i = 0; i < size; i++) {
 					// cell为空表示excel格式“异常”，最常见的是数据删除时保留excel格式
-					Cell cell = rowX.getCell(i);
+					Cell cell = row.getCell(i);
 					if (Objects.isNull(cell)) {
 						// 【“空数据”待处理】
 						continue;
@@ -120,7 +119,7 @@ public class SheetUtil {
 					if (Objects.isNull(mapField)) {
 						continue;
 					}
-					Object cellValue = getCellalue(cell, dateFormatter);
+					Object cellValue = getCellValue(mapField, cell);
 					mapField.setAccessible(true);
 					mapField.set(domainObj, cellValue);
 				}
@@ -131,15 +130,20 @@ public class SheetUtil {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static Object getCellalue(Cell cell, String dateFormatter) {
+	private static Object getCellValue(Field field, Cell cell) {
 		switch (cell.getCellType()) {
 		case Cell.CELL_TYPE_STRING:
 			return cell.getRichStringCellValue().getString();
 		case Cell.CELL_TYPE_NUMERIC:
 			if (HSSFDateUtil.isCellDateFormatted(cell)) {
 				// return cell.getDateCellValue());
+				ExcelCell excelCell = field.getAnnotation(ExcelCell.class);
+				if (Objects.isNull(excelCell) || Objects.isNull(excelCell.dateFormatter())
+						|| excelCell.dateFormatter().trim().length() == 0) {
+					throw new ExcelHandleException("Make sure that ExcelCell anotation&&dateFormatter exists!");
+				}
 				Date date = HSSFDateUtil.getJavaDate(cell.getNumericCellValue());
-				SimpleDateFormat sdf = new SimpleDateFormat(dateFormatter);
+				SimpleDateFormat sdf = new SimpleDateFormat(excelCell.dateFormatter().trim());
 				return sdf.format(date);
 			} else {
 				return cell.getNumericCellValue();
@@ -154,6 +158,25 @@ public class SheetUtil {
 			return null;
 		default:
 			return null;
+		}
+	}
+
+	public static String formmatterCellValue(Field field, Object fieldValue) {
+		if (Objects.isNull(fieldValue)) {
+			return null;
+		}
+		Class<?> fieldType = field.getType();
+
+		if (Date.class.equals(fieldType)) {
+			ExcelCell excelCell = field.getAnnotation(ExcelCell.class);
+			if (Objects.isNull(excelCell) || Objects.isNull(excelCell.dateFormatter())
+					|| excelCell.dateFormatter().trim().length() == 0) {
+				throw new ExcelHandleException("Make sure that ExcelCell anotation&&dateFormatter exists!");
+			}
+			SimpleDateFormat dateFormat = new SimpleDateFormat(excelCell.dateFormatter().trim());
+			return dateFormat.format(fieldValue);
+		} else {
+			return String.valueOf(fieldValue);
 		}
 	}
 }
