@@ -1,6 +1,7 @@
 package com.xpt.extension.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import com.monitorjbl.xlsx.StreamingReader;
 import com.xpt.extension.domain.ExcelImportDomain;
 import com.xpt.extension.exception.ExcelHandleException;
 import com.xpt.extension.mapping.ExcelSheet;
@@ -24,6 +26,26 @@ import com.xpt.extension.mapping.ExcelSheet;
 public class UniqueExcelImportUtil {
 
 	private UniqueExcelImportUtil() {
+	}
+
+	/**
+	 * 主要针对超过10万行要解析的Excel的Workbook获取
+	 * 
+	 * 缓存到内存中的行数，默认是10行;
+	 * 
+	 * 读取资源时缓存到内存的字节大小，默认是1024;
+	 * 
+	 * 资源必须打开，InputStream或者File都可以，但是只能打开XLSX格式的文件
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws Exception
+	 */
+	public static Workbook obtainWorkbookByStreamm(String filePath) throws Exception {
+		// StreamingReader用于读取Excel的内容，不能写入，不能随机读取Excel的内容
+		FileInputStream in = new FileInputStream(filePath);
+		Workbook workbook = StreamingReader.builder().rowCacheSize(100).bufferSize(4096).open(in);
+		return workbook;
 	}
 
 	/**
