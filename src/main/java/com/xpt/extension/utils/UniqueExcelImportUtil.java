@@ -14,9 +14,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.monitorjbl.xlsx.StreamingReader;
+import com.xpt.extension.annotation.ExcelSheet;
 import com.xpt.extension.domain.ExcelImportDomain;
 import com.xpt.extension.exception.ExcelHandleException;
-import com.xpt.extension.mapping.ExcelSheet;
 
 /**
  * 只支持单sheet页的导入

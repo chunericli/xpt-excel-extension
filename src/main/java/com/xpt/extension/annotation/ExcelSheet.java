@@ -1,4 +1,4 @@
-package com.xpt.extension.mapping;
+package com.xpt.extension.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

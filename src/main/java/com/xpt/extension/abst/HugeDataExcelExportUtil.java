@@ -1,4 +1,4 @@
-package com.xpt.extension.abs;
+package com.xpt.extension.abst;
 
 import java.io.File;
 import java.io.FileOutputStream;

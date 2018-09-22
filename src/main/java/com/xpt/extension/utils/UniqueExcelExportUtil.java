@@ -22,10 +22,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.xpt.extension.annotation.ExcelCell;
+import com.xpt.extension.annotation.ExcelSheet;
 import com.xpt.extension.domain.ExcelOutputDomain;
 import com.xpt.extension.exception.ExcelHandleException;
-import com.xpt.extension.mapping.ExcelCell;
-import com.xpt.extension.mapping.ExcelSheet;
 
 /**
  * 只支持单sheet页的导出

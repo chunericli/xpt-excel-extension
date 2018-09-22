@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel>
+	<entity name="用户表" code="user">
+		<column name="状态" code="status" type="String"></column>
+		<column name="端口号" code="port" type="int">
+			<rules>
+				<rule name="nullable" message="端口号不允许为空"></rule>
+			</rules>
+		</column>
+		<column name="IP地址" code="ip" type="String">
+			<rules>
+				<rule name="nullable" message="IP地址不允许为空"></rule>
+			</rules>
+		</column>
+		<column name="密码" code="password" type="String">
+			<rules>
+				<rule name="nullable" message="密码不允许为空"></rule>
+			</rules>
+		</column>
+		<column name="用户名" code="username" type="String"></column>
+		<column name="员工号" code="no" type="String">
+			<rules>
+				<rule name="nullable" message="员工号不允许为空"></rule>
+				<rule name="checkUnique" message="员工号已经存在"></rule>
+			</rules>
+		</column>
+		<column name="头像" code="userImage" type="BLOB"></column>
+	</entity>
+</excel>
